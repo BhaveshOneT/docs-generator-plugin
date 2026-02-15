@@ -395,6 +395,30 @@ After generation:
 
 ---
 
+## Document Length Constraints (CRITICAL)
+
+**The final scope document MUST be 4–5 pages maximum.** This is a hard constraint that applies regardless of how much source material or additional context is provided. Extra data should make the content smarter and more specific — NOT longer.
+
+### Rules:
+- **Total word count:** 800–1200 words across all sections (excluding cover page)
+- **Never exceed 5 pages** in the final DOCX output
+- **More source data = better quality, NOT more length.** When you have rich source material, use it to choose more precise wording and specific details — do not expand section lengths
+- **No Conclusion section by default.** Only add if the user explicitly requests it
+- **Brevity is a feature.** Clients value concise, scannable documents. Every sentence must earn its place
+
+### Per-Section Word Budget (approximate):
+
+| Section | Max Words | Format |
+|---------|-----------|--------|
+| 1. Initial Context | ~80–120 | 2 short paragraphs (4–5 sentences total) |
+| 2. In-Scope Features | ~250–350 | 2–3 sentences per subsection, NO deliverables sub-lists |
+| 3. Out-of-Scope | ~80–120 | Single-line dash bullets only, no explanations |
+| 4. Architecture Diagram | ~60–100 | 1–2 sentences + 3 short bullets + diagram image |
+| 5. Prerequisites | ~80–120 | Single-line round bullets, 6–8 items |
+| 6. Sprint Design | ~200–300 | Sprint 0 + 3–4 sprints, ~4–5 short bullet deliverables each |
+
+---
+
 ## Content Quality Standards
 
 ### Tone & Voice
@@ -413,35 +437,43 @@ After generation:
 ### Section-Specific Guidelines
 
 **Initial Context (Section 1):**
-- 2 paragraphs: problem statement + partnership framing
-- Reference the hackathon as origin point
-- Position the PoC as concrete next step
+- Maximum 2 short paragraphs (4–5 sentences total)
+- First paragraph: what was explored and key finding
+- Second paragraph: what this PoC will deliver and its significance
+- Do NOT pad with generic AI/partnership filler text
 
 **In-Scope Features (Section 2):**
 - One Heading2 subsection per use case / feature
-- 2-3 sentences per feature: what it does, how it works, what value it adds
-- Use specific terminology from the hackathon (e.g., "SAP CRM" not "the CRM system")
-- If a feature has options/alternatives, present them clearly
+- **2–3 sentences per subsection maximum** — what it does, how it works, what value it adds
+- Use specific terminology from the hackathon (e.g., "SAP CRM via RFC" not "the CRM system")
+- **Do NOT include deliverables sub-lists under each feature** — the description sentences are sufficient
+- If a feature has options/alternatives, present them in a single sentence
 
 **Out-of-Scope (Section 3):**
 - Use `bullet_style: "dash"` (hyphen prefix, matching One Thousand format)
-- Be specific about what's excluded and why (manages client expectations)
-- Include items that were discussed but deliberately excluded
+- **Single-line items only** — each bullet is one concise phrase (5–15 words)
+- Do NOT add explanations, reasons, or multi-sentence descriptions per item
+- Example good: `"Image processing from PDFs or other documents"`
+- Example bad: `"Image processing — While the hackathon explored image extraction, this requires additional ML and is deferred."`
 
 **Architecture Diagram (Section 4):**
-- Include a text description even when embedding an image
-- Mention hosting setup, key integrations, data flow direction
+- **1–2 sentences** describing the architecture + hosting setup
+- **3 short bullets** for key infrastructure points
+- The diagram image provides the rest of the detail — keep text minimal
 
 **Prerequisites (Section 5):**
 - Use `bullet_style: "normal"` (round bullets)
-- List what the client needs to provide: data access, credentials, environments, personnel
+- **Single-line bullets only** (one sentence each, ~10–20 words)
+- 6–8 items typical
 - Be specific: "Access to SAP CRM API" not "System access"
+- Do NOT include status indicators, owners, or timelines in each bullet
 
 **Sprint Design (Section 6):**
 - Set `is_sprint_section: true`
 - Sprint 0 is always preparation/setup (before kickoff)
-- Each sprint: bold title line + "Deliverables:" label + bullet list
-- Be realistic about scope per sprint
+- Each sprint: bold title line + "Deliverables:" label + **4–5 short bullet deliverables**
+- Each deliverable bullet is one concise line (~5–15 words)
+- **Do NOT include Objectives, Key Activities, or Success Criteria sub-sections** — just deliverables
 - Don't invent sprint durations unless discussed
 
 ### Anti-Hallucination Rules (Critical)
@@ -460,7 +492,7 @@ Read the full rules at `references/anti-hallucination-rules.md`. Summary:
 
 ## Standard Section Structure
 
-For English documents, the typical section order is:
+For English documents, the standard 6-section structure is:
 
 1. Initial Context
 2. In-Scope Features (with subsections per use case)
@@ -478,7 +510,7 @@ For German documents:
 5. Voraussetzungen von [Kunde] (Punkt-Aufzählung)
 6. Sprint Design & Zeitplan (Sprint-Labels + Lieferergebnisse)
 
-You may add, remove, or reorder sections based on the source material. Common additions: "Performance Assumptions", "Next Steps & Conclusion", "Open Questions".
+**Important:** Do NOT add a Conclusion section by default. The 6-section structure above is the standard. Only add extra sections (e.g., "Next Steps", "Open Questions") if the user explicitly requests them. Adding sections increases page count — always respect the 4–5 page limit.
 
 ---
 

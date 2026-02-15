@@ -46,10 +46,10 @@ Professional reference guide for writing each section of a scope document in Eng
 - `{{BUSINESS_PROBLEM}}`: The challenge {{CLIENT}} faces
 - `{{IMPACT_OF_PROBLEM}}`: How it affects them (time, cost, quality)
 
-### Length Guidelines
-- 2-3 sentences minimum
-- 5-6 sentences maximum
-- 150-250 words typical range
+### Length Guidelines (CRITICAL)
+- 4–5 sentences maximum across 2 short paragraphs
+- 80–120 words total — no more
+- Extra source data should make sentences more specific, NOT add more sentences
 
 ---
 
@@ -73,68 +73,23 @@ Professional reference guide for writing each section of a scope document in Eng
 
 The feature includes [additional context]. {{CLIENT}} will be able to [tangible outcome]."
 
-### Deliverables Format
-After each feature description, include bullet points for concrete deliverables:
+### IMPORTANT: No Deliverables Sub-lists
 
-```
-**Deliverables:**
-- [Specific component/function]
-- [Technical implementation detail]
-- [Integration point]
-- [User-facing capability]
-```
+Do NOT include "Deliverables:" bullet lists under each feature. The 2–3 sentence description is sufficient. Deliverables sub-lists bloat the document and push it beyond the 4–5 page limit.
 
-### Common AI Features - Writing Patterns
+### Concise Feature Writing Patterns (2–3 sentences each)
 
 #### Data Extraction Feature
-"2.1 Automated Data Extraction will enable the system to identify and extract key information from [document type]. Using [extraction method], the system will parse [document structure] and populate [target format] with {{ACCURACY_RATE}}% accuracy. {{CLIENT}} users will be able to [user action], reducing manual data entry time by an estimated {{TIME_SAVED}}."
-
-**Deliverables:**
-- Extraction model trained on [data source]
-- API endpoint accepting [input format]
-- Output schema matching {{CLIENT}}'s database structure
-- Confidence scoring for extracted values
-- Human-in-the-loop review interface
+"The system extracts text from [document type] using [extraction method] and ingests it into [target]. Custom parsing handles [specific challenge] with minimal information loss."
 
 #### Classification Feature
-"2.2 Document Classification will automatically categorize [document type] into [number] predefined categories. The classifier uses [method] and achieves [accuracy metric] based on [training data source]. This enables {{CLIENT}} to [workflow improvement], eliminating [pain point]."
-
-**Deliverables:**
-- Classification model with [number] output categories
-- Confidence thresholds for automatic vs. manual review
-- API integration with [system name]
-- Admin dashboard to view classification accuracy metrics
-- Process for updating categories
+"[Feature name] automatically categorizes [document type] into [number] categories using [method]. This enables {{CLIENT}} to [workflow improvement]."
 
 #### Chatbot/Conversational Feature
-"2.3 Intelligent Query Interface will enable {{CLIENT}} staff to ask natural language questions about [domain]. The system will understand [query types] and retrieve [information source], presenting responses in [format]. This reduces reliance on [manual process]."
+"When a [user role] asks a question, the system identifies the most relevant [information source] via [search method], then generates a natural-language answer using [AI service]. It handles [query types]."
 
-**Deliverables:**
-- Natural language understanding model for [domain]
-- Integration with [knowledge source/database]
-- Conversation context management
-- Fallback to human agent when [condition]
-- User satisfaction feedback mechanism
-
-#### Dashboard/Analytics Feature
-"2.4 Executive Dashboard will provide real-time visibility into [metrics]. The dashboard will display [key metrics], with drill-down capability to [detail level]. {{CLIENT}} leadership can monitor [business objective] and identify [improvement opportunity]."
-
-**Deliverables:**
-- Real-time data connection to [data source]
-- Visualization components for [specific metrics]
-- Configurable time range filters
-- Export capability to [format]
-- [Number] pre-built report templates
-
-#### API Integration Feature
-"2.5 Integration with [External System] will enable seamless data flow between [System A] and [System B]. The integration will [synchronize/exchange/pull] [data type] on [frequency], ensuring {{CLIENT}} maintains a single source of truth for [critical data]."
-
-**Deliverables:**
-- OAuth/API authentication configuration
-- Data transformation logic from [Source Format] to [Target Format]
-- Scheduled sync job with error handling and retry logic
-- Audit log of all data transfers
-- Documentation of field mappings
+#### Integration Feature
+"The [system name] is deployed as a [platform] app using [integration method]. Users [interaction pattern] to ensure focused responses."
 
 ### Key Phrases to Use
 - "The feature will enable {{CLIENT}} to..."
@@ -150,24 +105,20 @@ After each feature description, include bullet points for concrete deliverables:
 - Overly technical jargon without explanation
 
 ### Structure Per Feature
-1. Opening sentence: What the feature does in business terms
-2. Technical details: How it works, accuracy, integrations
-3. Benefit statement: What improves for {{CLIENT}}
-4. Deliverables: Specific, measurable outputs
+1. Opening sentence: What the feature does (what + how)
+2. Technical sentence: Key technology, method, or integration
+3. Optional third sentence: User benefit or specific detail
 
 ### Variable Placeholders
 - `{{ACTION}}`: What users can do (e.g., "extract vendor information from invoices")
 - `{{METHOD}}`: How it works (e.g., "a machine learning model trained on historical data")
 - `{{BENEFIT}}`: Why it matters (e.g., "reducing processing time from 2 hours to 5 minutes per document")
-- `{{ACCURACY_RATE}}`: Expected performance (e.g., "95%")
-- `{{TIME_SAVED}}`: Time benefit
-- `{{COMPONENT}}`: Technical component (e.g., "extraction API")
 
-### Length Guidelines
-- Minimum 3 paragraphs per major feature
-- 1-2 paragraphs for minor features
-- 200-400 words per feature typical range
-- Bullet lists of 4-8 items per deliverables section
+### Length Guidelines (CRITICAL)
+- **2–3 sentences per feature subsection** — this is a hard limit
+- No deliverables sub-lists
+- Total In-Scope section: 250–350 words maximum
+- More source data = more specific sentences, NOT more sentences
 
 ---
 
@@ -177,79 +128,46 @@ After each feature description, include bullet points for concrete deliverables:
 
 ### Template Pattern
 
-Use a dash-separated list format:
+Use a simple dash-separated list format with **single-line items only**:
 
 ```
 ## 3. Out-of-Scope Features
 
-The following items are explicitly excluded from this PoC scope:
-
-— **[Feature Name]**: [Brief reason why excluded or deferred]
-— **[Feature Name]**: [Brief reason]
-— **[Feature Name]**: [Brief reason]
+- Image processing from PDFs or other documents
+- Customer-facing interactions (internal users only)
+- Spoken language processing (written text only)
+- Additional data sources beyond the four defined sources
+- Production deployment hardening (load testing, disaster recovery)
 ```
 
-### Common Out-of-Scope Items
+### CRITICAL: Single-Line Items Only
 
-#### Production Deployment
-"— **Production Environment Deployment**: While the PoC will be fully functional, deployment to {{CLIENT}}'s production infrastructure, including load balancing, disaster recovery, and production security hardening, is outside this scope. A separate deployment engagement would be required for production rollout."
+Each out-of-scope bullet must be a **single concise phrase** (5–15 words). Do NOT include:
+- Bold feature names with colon-separated explanations
+- Multi-sentence descriptions per item
+- Reasons why items are excluded
+- Suggestions for when items might be addressed
 
-#### Data Migration
-"— **Historical Data Migration**: The PoC will be configured to accept new data and process it correctly. Migration of {{CLIENT}}'s existing historical data from [legacy system] is not included. A separate data migration project may be required before production launch."
+**Good examples (single-line):**
+- "Image processing from PDFs or other documents"
+- "Customer-facing interactions (internal technicians only)"
+- "Comprehensive multi-language support beyond German and English"
+- "Production deployment hardening (load testing, disaster recovery)"
+- "CRM integration if it does not add sufficient value during Sprint 4"
 
-#### User Training & Change Management
-"— **End-User Training**: This engagement does not include developing training materials or conducting user training sessions. {{CLIENT}} will be responsible for end-user training based on provided documentation and training environment access."
-
-#### Security Audit
-"— **Security Audit & Compliance Certification**: While the solution will follow security best practices, a formal security audit or compliance certification (e.g., SOC 2, ISO 27001) is not included in this scope."
-
-#### Load Testing & Performance Optimization
-"— **Load Testing & Performance Optimization**: The PoC will be tested under typical usage patterns. Comprehensive load testing for [number] concurrent users and optimization for peak performance is deferred to a post-PoC engagement."
-
-#### Custom Integrations (Additional)
-"— **Integration with [Third-party System]**: This PoC includes integration with [System A]. Custom integrations with [System B] and [System C] are not included and would require a separate scope."
-
-#### Multi-language Support
-"— **Multi-language Localization**: The PoC will be delivered in English. Translation to [other languages] and localization for regional markets is not included."
-
-#### Advanced Analytics
-"— **Advanced Predictive Analytics**: The PoC includes basic dashboards and reporting. Machine learning-based predictive models for [use case] are deferred to a future phase."
-
-#### Mobile Application
-"— **Mobile Application**: This PoC focuses on web-based access. Development of native mobile applications for iOS and Android is not included."
-
-#### Custom Hardware Integration
-"— **Custom Hardware Integration**: The solution will run on standard server infrastructure. Integration with [specific hardware/devices] is not included."
+**Bad examples (too verbose):**
+- "**Production Environment Deployment**: While the PoC will be fully functional, deployment to the client's production infrastructure is outside this scope."
+- "**Historical Data Migration**: Migration of existing historical data from the legacy system is not included."
 
 ### Key Phrases to Use
-- "explicitly excluded from this scope"
-- "outside this PoC"
-- "deferred to a future phase"
-- "not included in this engagement"
-- "may be required in a subsequent project"
+- Parenthetical clarifiers: "(internal users only)", "(written text only)"
+- Brief conditional notes: "if it does not add sufficient value"
 
-### Key Phrases to Avoid
-- "We won't do..." (too informal)
-- "Maybe later..." (vague)
-- "Probably out of scope..." (uncertain)
-- Just listing items without explanation
-
-### Structure Per Item
-1. Feature/item name in bold
-2. Clear reason why it's excluded or deferred
-3. When applicable, suggest when it might be addressed
-
-### Variable Placeholders
-- `{{CLIENT}}`: Client name
-- `{{SYSTEM}}`: System names
-- `{{LEGACY_SYSTEM}}`: The system being replaced/integrated with
-- `{{TIME_PERIOD}}`: Timeline if applicable
-
-### Length Guidelines
-- 1 sentence per out-of-scope item
-- 40-80 words per item
-- List of 4-8 items typical
-- Total section 200-400 words
+### Length Guidelines (CRITICAL)
+- **5–15 words per item** — single line only
+- 5–8 items typical
+- Total section: 80–120 words maximum
+- No bold formatting, no colons, no multi-sentence items
 
 ---
 
@@ -257,57 +175,37 @@ The following items are explicitly excluded from this PoC scope:
 
 **Purpose**: Provide visual representation of the proposed system design with brief explanatory context.
 
-### Template Patterns
+### Template Pattern (Concise)
 
-#### Simple Architecture Introduction
-"The following architecture diagram illustrates the proposed system design for {{USE_CASE}}. The design separates concerns across three layers: [Layer 1], [Layer 2], and [Layer 3]. This architecture ensures [benefit], maintains {{CLIENT}}'s data governance standards, and provides clear separation between [concern A] and [concern B]."
+The architecture text should be **1–2 sentences + 3 short bullets**. The diagram image does the heavy lifting — text is supplementary only.
 
-#### Integration-focused Architecture Introduction
-"The proposed architecture for {{USE_CASE}} integrates {{CLIENT}}'s existing systems with new AI capabilities. [System A] serves as the primary data source, [System B] maintains the single source of truth, and the new [component] processes and enriches data before [outcome]. This approach ensures {{CLIENT}} maintains control over [critical aspect] while leveraging [technology] for [benefit]."
+#### Pattern
+"This is an initial architecture diagram constructed based on our hackathon conversations and project design. We will use this as the blueprint for project implementation.
 
-#### Multi-component Architecture Introduction
-"The solution comprises four main components: (1) [Component A] for [function], (2) [Component B] for [function], (3) [Component C] for [function], and (4) [Component D] for [function]. Data flows from [source] through [processing] and results in [outcome]. This design enables [benefit] and minimizes [risk]."
+Hosting Setup: [Cloud provider] within [Client] subscription:
+- [Infrastructure point 1]
+- [Infrastructure point 2]
+- [Infrastructure point 3]"
 
-### Key Elements to Describe After Diagram
-- Primary data flows and their direction
-- System boundaries and security zones
-- Third-party integrations and their role
-- Where {{CLIENT}}'s data is stored and processed
-- How the system handles [critical process]
+#### Example
+"This is an initial architecture diagram constructed based on our hackathon conversations and project design. We will use this as the blueprint for project implementation.
 
-### Key Phrases to Use
-- "The architecture consists of..."
-- "Data flows from [source] to [destination]..."
-- "This design ensures..."
-- "[Component] is responsible for..."
-- "The system integrates with [external service]..."
+Hosting Setup: Azure cloud within SW subscription:
+- Data sources stored on SW premises with backup in Azure Blob Storage
+- AI services hosted in SW's Azure environment (West Germany / France Central)
+- Teams integration via Power Virtual Agents and Power Automate"
 
-### Key Phrases to Avoid
-- "We might use..." (uncertain, belongs in future phases)
-- "The diagram shows what we'll probably build..." (hedge language)
-- Unexplained technical terms without business context
-
-### What NOT to Include in Architecture Section
-- Implementation details that belong in feature descriptions
-- Specific tool/library choices (those go in technical specifications)
-- Deployment architecture (that's separate from logical design)
+### What NOT to Include
+- Lengthy component-by-component descriptions (the diagram shows this)
+- Data flow narratives (arrows in diagram show this)
+- Implementation details or library choices
 - Code snippets or pseudocode
 
-### Structure
-1. Opening sentence: What the diagram shows
-2. Layer/component overview: Main building blocks and their purpose
-3. Data flow explanation: How information moves through the system
-4. Key benefits: Why this architecture was chosen
-
-### Variable Placeholders
-- `{{USE_CASE}}`: The specific use case (e.g., "invoice automation")
-- `{{BENEFIT}}`: Why this architecture matters (e.g., "scalability and maintainability")
-- `{{COMPONENT}}`: System component name
-
-### Length Guidelines
-- Introduction text: 150-250 words
-- Include actual architecture diagram (Miro, Lucidchart, or similar)
-- Keep diagram text minimal and clear
+### Length Guidelines (CRITICAL)
+- **1–2 sentences** introductory text
+- **3 short bullets** for hosting/infrastructure highlights
+- Total: 60–100 words maximum (excluding diagram image)
+- The diagram image provides the detail — keep text minimal
 
 ---
 
@@ -315,101 +213,44 @@ The following items are explicitly excluded from this PoC scope:
 
 **Purpose**: Clearly state what the client must provide for the PoC to succeed.
 
-### Template Patterns
+### Template Pattern (Concise)
 
-#### Standard Prerequisites Format
+Use **simple single-line bullets** — no status indicators, no owners, no timelines, no bold formatting.
+
 ```
 ## 5. Prerequisites from {{CLIENT}}
 
-For this PoC to proceed successfully, {{CLIENT}} must provide:
-
-- [Prerequisite item] - [description] - {{STATUS}}
-- [Prerequisite item] - [description] - {{STATUS}}
-- [Prerequisite item] - [description] - {{STATUS}}
+- Access to {{CLIENT}} [system/platform] subscription
+- API access to [System A], [System B], and [System C] data sources
+- Access to [file server/storage] and [specific documents/data]
+- Access to {{CLIENT}} [communication platform] for deployment
+- [Cloud/AI service] access within {{CLIENT}}'s subscription
+- [Number] sample questions and answers per data source for validation
+- Regular availability of domain experts for testing and feedback ([names])
 ```
 
-#### Prerequisites with Status Indicators
-```
-**Data Access Prerequisite:**
-- Access to [System/Database Name] - Read access to [specific tables/endpoints] required for [purpose] - Status: {{STATUS}}
-  - {{CLIENT}} Owner: [Role]
-  - Timeline: Should be available by [date]
-  - Effort to provide: [estimate, e.g., "1-2 hours"]
+### CRITICAL: Single-Line Bullets Only
 
-**Domain Expert Prerequisite:**
-- [Number] hours per week domain expert availability - For requirements clarification, terminology validation, and [specific use case]. Minimum [X] hours per sprint - Status: {{STATUS}}
-  - {{CLIENT}} Owner: [Name/Role]
-  - Suggested meeting cadence: [frequency]
+Each prerequisite is one line (~10–20 words). Do NOT include:
+- Bold feature names with descriptions
+- Status indicators (✓, ⏳, ⚠, ❌)
+- Owner assignments
+- Timelines or effort estimates
+- Multi-line nested sub-items
 
-**Infrastructure Prerequisite:**
-- [Infrastructure requirement] - {{CLIENT}} must provide [description]. Estimated capacity: [spec] - Status: {{STATUS}}
-  - {{CLIENT}} Owner: [Role]
-  - Timeline: Ready by [date]
-```
+**Good examples:**
+- "Access to SW Azure subscription and Power Platform (Copilot Studio, Power Automate)"
+- "API access to Academy System, AuthorIT, and CRM data sources"
+- "20 sample questions and answers per data source for validation"
 
-### Common Prerequisites
+**Bad examples:**
+- "**API Access to Academy System**: Read and write access to SW's Academy System API, with credentials to authenticate as integration user. Required for data extraction. Status: ⏳ In Progress"
 
-#### API Access
-"- **API Access to [System Name]**: Read and write access to {{CLIENT}}'s [System Name] API, with credentials to authenticate as [integration user]. Required for [data source/destination] operations. Status: {{STATUS}}"
-
-#### Sample Data / Training Data
-"- **Representative Sample Data**: [Number] sample records from [system/process] containing [data types]. This data will be used to [train models/configure extraction rules/demonstrate functionality]. Status: {{STATUS}}"
-
-#### Domain Expert Availability
-"- **Subject Matter Expert Availability**: [X] hours per week availability from {{CLIENT}}'s [Domain] expert for requirements validation, test case review, and terminology clarification. Recommended meeting frequency: [cadence]. Status: {{STATUS}}"
-
-#### Test Environment
-"- **Test Environment Access**: Dedicated test instance of [System Name] with [specifications] where One Thousand can [install/test/integrate] without affecting production. Status: {{STATUS}}"
-
-#### IT Infrastructure Access
-"- **IT Infrastructure Access**: Network access to [systems], database connection string for [database], and appropriate firewall rule allowances for [services]. Status: {{STATUS}}"
-
-#### Business Process Documentation
-"- **Current Process Documentation**: Documentation or videos of {{CLIENT}}'s current [process] including [specific steps]. This will inform our [understanding/requirements/test cases]. Status: {{STATUS}}"
-
-#### Approval Process / Sign-offs
-"- **Stakeholder Approval**: {{CLIENT}} will designate a [role] who can approve [decisions/changes] during the PoC. One Thousand requires documented decisions by [date] on [topics]. Status: {{STATUS}}"
-
-#### Feedback & Testing Resources
-"- **User Testing Participation**: [Number] {{CLIENT}} end-users available to participate in [testing activities/UAT] on [frequency]. Status: {{STATUS}}"
-
-### Status Indicators
-- ✓ Confirmed - Client has confirmed availability
-- ⏳ In Progress - Client is working to provide
-- ⚠ At Risk - Potential blockers identified
-- ❌ Not Yet Addressed - Still to be discussed
-
-### Key Phrases to Use
-- "{{CLIENT}} must provide..."
-- "Required for {{USE_CASE}} to..."
-- "Owner: {{CLIENT}} [role]"
-- "Timeline: Available by [date]"
-- "Estimated effort to provide: [estimate]"
-
-### Key Phrases to Avoid
-- "We hope {{CLIENT}} can..." (passive)
-- "Ideally, {{CLIENT}} would..." (uncertain)
-- "If possible..." (hedge language)
-
-### Structure
-1. Grouping by category (Data, Infrastructure, People, Resources)
-2. Specific requirement description
-3. Why it's needed (purpose)
-4. Current status
-5. Responsible {{CLIENT}} party
-6. Timeline for availability
-
-### Variable Placeholders
-- `{{CLIENT}}`: Client company name
-- `{{STATUS}}`: ✓ Confirmed, ⏳ In Progress, ⚠ At Risk, ❌ Not Addressed
-- `{{USE_CASE}}`: The specific use case
-- `{{ROLE}}`: Job title at {{CLIENT}}
-
-### Length Guidelines
-- 1 line per straightforward prerequisite
-- 2-3 lines per complex prerequisite
-- Total list: 6-12 items typical
-- Total section: 300-500 words
+### Length Guidelines (CRITICAL)
+- **Single line per item** (~10–20 words)
+- 6–8 items typical
+- Total section: 80–120 words maximum
+- No bold, no status, no nested items
 
 ---
 
@@ -417,249 +258,90 @@ For this PoC to proceed successfully, {{CLIENT}} must provide:
 
 **Purpose**: Outline the development timeline, deliverables per sprint, and key milestones.
 
-### Template Patterns
+### Template Pattern (Concise — Deliverables Only)
 
-#### Standard Sprint Format
+Each sprint has: **bold title line** + **"Deliverables:" label** + **4–5 short bullet deliverables**. No Objectives, Key Activities, or Success Criteria sub-sections.
+
 ```
 ## 6. High-Level Sprint Design
 
-The PoC will be delivered over {{SPRINT_COUNT}} sprints of {{SPRINT_LENGTH}} weeks each.
+We suggest to implement this solution over [N] sprints. Please find below the sprint goals and deliverables. We will finalize this together with you before our project kickoff.
 
-### Sprint 0: Foundation & Setup ({{DURATION}})
-**Objective**: Establish development environment, integrate data sources, and validate technical approach.
+Exemplary development sprints plan
 
-**Key Activities**:
-- [Activity description]
-- [Activity description]
-- [Activity description]
+Sprint 0: Preparation (1 week — before project kickoff)
+Deliverables:
+- Confirm [infrastructure] prerequisites
+- Align on [scope items] and data source APIs
+- Finalize architecture design and tech stack decisions
+- Define sample Q&A sets for each data source
 
-**Deliverables**:
-- [Specific working component]
-- [Integration/configuration]
-- [Documentation or artifact]
+Sprint 1: [Goal description] (X weeks)
+Deliverables:
+- [Deliverable 1]
+- [Deliverable 2]
+- [Deliverable 3]
+- [Deliverable 4]
 
-**Success Criteria**:
-- [Measurable condition]
-- [Measurable condition]
-
----
-
-### Sprint 1: [Feature Name] ({{DURATION}})
-**Objective**: [What will be accomplished in one sentence]
-
-**Key Activities**:
-- [Activity]
-- [Activity]
-
-**Deliverables**:
-- [Feature component]
-- [Testing/validation artifact]
-
-**Success Criteria**:
-- [Feature works as specified]
-- [Performance threshold met]
+Sprint 2: [Goal description] (X weeks)
+Deliverables:
+- [Deliverable 1]
+- [Deliverable 2]
+- [Deliverable 3]
+- [Deliverable 4]
 ```
 
-#### Multi-Sprint Feature Delivery
-"### Sprint 1-2: [Feature Name] Development ({{DURATION}})"
+### CRITICAL: Deliverables Only
 
-### Common Sprint Types
+Do NOT include per-sprint:
+- **Objective** sub-sections
+- **Key Activities** sub-sections
+- **Success Criteria** sub-sections
+- Multi-sentence deliverable descriptions
 
-#### Sprint 0 / Foundation Sprint
-```
-### Sprint 0: Foundation & Setup (1 week)
-**Objective**: Prepare development infrastructure and validate technical assumptions from the hackathon.
+Each deliverable bullet is one concise line (~5–15 words).
 
-**Key Activities**:
-- Configure development environment and code repository
-- Establish data connections to {{CLIENT}}'s [System Name]
-- Validate access to [data sources] and confirm data structure assumptions
-- Conduct technical architecture review with {{CLIENT}} stakeholders
-- Set up logging, monitoring, and local testing framework
+**Good examples:**
+- "Deploy Qdrant vector database on Azure"
+- "Build initial data extraction pipeline for error codes"
+- "Parse and ingest Academy training documents"
+- "Final testing and fine-tuning of answers"
 
-**Deliverables**:
-- Development environment fully operational and documented
-- Confirmed data integration working end-to-end
-- Technical design document reviewed and approved by {{CLIENT}}
-- Definition of done standards established
-
-**Success Criteria**:
-- Development team can build and test features locally
-- Data flows correctly from {{CLIENT}} systems to development environment
-- Technical risks identified and mitigation plans in place
-- {{CLIENT}} technical stakeholders have approved the approach
-```
-
-#### Feature Implementation Sprint
-```
-### Sprint 1: [Feature Name] Core Functionality (1 week)
-**Objective**: Deliver the core functionality for [feature], including data processing and user interface.
-
-**Key Activities**:
-- Implement [specific component] based on [approach]
-- Create [user interface/API endpoints] for {{CLIENT}} to [user action]
-- Build [supporting infrastructure] for [purpose]
-- Develop unit tests achieving [coverage percentage]
-- Conduct internal code review
-
-**Deliverables**:
-- Working [feature] accessible via [interface]
-- Unit test suite with [X%] code coverage
-- API documentation (if applicable)
-- Internal testing report with known limitations
-
-**Success Criteria**:
-- Feature [specific criteria]
-- Performance meets [threshold]
-- Code passes quality gates
-- {{CLIENT}} technical team can review and test
-```
-
-#### Testing & Refinement Sprint
-```
-### Sprint 2: Testing, Refinement & Integration (1 week)
-**Objective**: Validate [feature] against {{CLIENT}} requirements, fix defects, and prepare for handover.
-
-**Key Activities**:
-- Conduct {{CLIENT}} user acceptance testing with [participants]
-- Document and fix identified issues
-- Refine [specific areas] based on feedback
-- Prepare training materials and user documentation
-- Performance testing and optimization
-
-**Deliverables**:
-- Updated feature with all UAT-identified defects resolved
-- User documentation and [type] training materials
-- Performance test results and optimization report
-- Known issues log (if any) with workarounds
-
-**Success Criteria**:
-- {{CLIENT}} approves feature for production
-- All critical and high-priority issues resolved
-- Documentation is complete and reviewed
-- No open blockers for deployment
-```
-
-#### Final Sprint (Handover)
-```
-### Sprint 3: Final Testing, Documentation & Handover ({{DURATION}})
-**Objective**: Conduct final quality assurance, prepare operational documentation, and transfer knowledge to {{CLIENT}}.
-
-**Key Activities**:
-- End-to-end system testing in {{CLIENT}}'s test environment
-- Create [operational documentation] for {{CLIENT}} IT team
-- Conduct [support team] training on [system operations/troubleshooting]
-- Prepare production deployment runbook
-- Create [knowledge transfer artifacts]
-
-**Deliverables**:
-- Final quality assurance report
-- Operational runbooks and troubleshooting guides
-- Training materials for [support/operations/end-users]
-- Production deployment plan and checklist
-- Knowledge transfer documentation
-
-**Success Criteria**:
-- {{CLIENT}} support team can operate and troubleshoot the system
-- All documentation is complete and reviewed
-- Zero blocker-level defects remaining
-- {{CLIENT}} ready for production handover
-```
-
-### Key Phrases to Use
-- "Sprint [N] focuses on..."
-- "Deliverables for this sprint:"
-- "Success criteria include..."
-- "Key milestones: [date], [date]..."
-- "By the end of Sprint [N], {{CLIENT}} will have..."
-
-### Key Phrases to Avoid
-- "We'll try to..." (uncertain)
-- "Depending on issues..." (vague)
-- "Hopefully we'll complete..." (unprofessional)
+**Bad examples:**
+- "Development environment fully operational and documented with all dependencies configured"
+- "Working feature accessible via REST API with comprehensive error handling and retry logic"
 
 ### Structure Per Sprint
-1. Sprint title and duration
-2. Objective statement (one sentence)
-3. Key activities (3-5 items)
-4. Specific deliverables (3-5 items)
-5. Clear success criteria (2-3 measurable items)
+1. Bold sprint label with title and duration
+2. "Deliverables:" label
+3. 4–5 short bullet deliverables (one line each)
 
-### Variable Placeholders
-- `{{SPRINT_COUNT}}`: Total number of sprints (e.g., "3")
-- `{{SPRINT_LENGTH}}`: Length of each sprint (e.g., "1-week")
-- `{{DURATION}}`: Duration of this sprint (e.g., "1 week")
-- `{{FEATURE_NAME}}`: Feature being built
-- `{{CLIENT}}`: Client name
-
-### Length Guidelines
-- Sprint 0: 200-300 words
-- Feature sprints: 250-350 words each
-- Final sprint: 250-350 words
-- Total section: 1000-1500 words for 3-4 sprint PoC
+### Length Guidelines (CRITICAL)
+- 1–2 sentence intro for the whole section
+- Sprint 0 + 3–4 implementation sprints
+- **4–5 bullet deliverables per sprint** (one concise line each)
+- Total section: 200–300 words maximum
+- No Objectives, Key Activities, or Success Criteria
 
 ---
 
-## 7. Conclusion
+## 7. Conclusion (OPTIONAL — Not included by default)
 
-**Purpose**: Close professionally, reinforce partnership, and set stage for next steps.
+**IMPORTANT:** Do NOT include a Conclusion section by default. The standard scope document ends at Section 6 (Sprint Design). Only add a Conclusion if the user explicitly requests it.
 
-### Template Patterns
+Including a Conclusion section adds ~150–250 words and risks pushing the document beyond the 4–5 page limit.
 
-#### Partnership-focused Conclusion
-"One Thousand is excited to partner with {{CLIENT}} on this {{USE_CASE}} initiative. We believe the proposed scope represents an achievable, high-impact PoC that will [benefit]. Our team brings [relevant expertise], and we're committed to delivering a solution that [addresses stated goal]. We look forward to [next step] and to supporting {{CLIENT}}'s [strategic objective] through this engagement."
-
-#### Value-focused Conclusion
-"This PoC will enable {{CLIENT}} to [key benefit]. By delivering [outcome], {{CLIENT}} will be positioned to [strategic advantage]. One Thousand's team is ready to begin work on [date]. We're confident that the proposed scope is achievable and will deliver measurable value by the completion of the PoC in [timeframe]."
-
-#### Action-oriented Conclusion
-"One Thousand is ready to commence the {{USE_CASE}} PoC. The next step is to [specific next action] by {{CLIENT}} by [date], which will allow us to start on [date]. We will formally kick off with {{CLIENT}} leadership and technical team on [date]. Please confirm your availability and let us know if you have any questions about this scope document. We're excited to get started."
-
-### Key Elements to Include
-- Restatement of the value proposition
-- Confirmation of readiness to proceed
-- Reference to the next step or kickoff
-- Positive, forward-looking tone
-- Contact information or next meeting date
-
-### Key Phrases to Use
-- "One Thousand is excited to..."
-- "This PoC will enable {{CLIENT}} to..."
-- "We're committed to..."
-- "The next step is..."
-- "We look forward to..."
-
-### Key Phrases to Avoid
-- "We hope this works..." (uncertain)
-- "Fingers crossed..." (informal)
-- "If everything goes well..." (hedge language)
-- Unsupported optimism about outcomes
-
-### Structure
-1. Opening: Partnership affirmation and value statement
-2. Middle: Restatement of key benefits
-3. Closing: Next steps and readiness confirmation
-
-### Variable Placeholders
-- `{{CLIENT}}`: Client company name
-- `{{USE_CASE}}`: The specific use case
-- `{{BENEFIT}}`: Key benefits from this PoC
-- `{{DATE}}`: Next milestone date (kickoff, document sign-off, etc.)
-- `{{TIMEFRAME}}`: PoC completion timeframe
-
-### Length Guidelines
-- 3-4 sentences minimum
-- 4-5 sentences maximum
-- 150-250 words typical range
-
-### Example Full Conclusion
-"One Thousand is excited to partner with {{CLIENT}} on this invoice automation initiative. This PoC will enable {{CLIENT}} to reduce invoice processing time from 45 minutes to under 10 minutes per document, dramatically improving accounts payable efficiency. We're committed to delivering a robust, thoroughly tested solution that {{CLIENT}} can confidently deploy to production by the end of Q2.
-
-The next step is for {{CLIENT}} to confirm the prerequisites outlined in Section 5 and approve this scope document. We're ready to kick off on March 22nd and deliver measurable impact within four weeks. Please let us know if you have any questions or would like to discuss any aspect of the proposed scope."
+If explicitly requested, keep it to 3–4 sentences maximum.
 
 ---
 
 ## Writing Style Guidelines for All Sections
+
+### Document Length (CRITICAL)
+- **The entire document must be 4–5 pages maximum (800–1200 words)**
+- More source data = more specific content, NOT more content
+- Every sentence must earn its place — cut anything generic or filler
+- When in doubt, shorter is better
 
 ### Tone
 - Professional but not stuffy
@@ -672,8 +354,8 @@ The next step is for {{CLIENT}} to confirm the prerequisites outlined in Section
 - Clear section headers with numbering
 - Topic sentences at the start of paragraphs
 - Bullet points for lists of related items
-- Short paragraphs (3-5 sentences typical)
-- Avoid walls of text
+- Short paragraphs (2–3 sentences typical)
+- Single-line bullets in list sections (Out-of-Scope, Prerequisites)
 
 ### Language
 - Active voice preferred: "The system will extract..." not "Extraction will be performed..."
@@ -685,19 +367,20 @@ The next step is for {{CLIENT}} to confirm the prerequisites outlined in Section
 ### What Makes a Good Scope Document Section
 - ✓ Every claim traces to the hackathon documentation or user notes
 - ✓ Features are described with enough detail to be binding
-- ✓ Client benefits are explicitly stated
-- ✓ Prerequisites are clear and actionable
+- ✓ Content is concise — no filler, no padding, no redundancy
+- ✓ Prerequisites are clear, actionable, and single-line
 - ✓ Timeline and deliverables are specific
-- ✓ Out-of-scope items prevent scope creep
+- ✓ Out-of-scope items are single-line phrases
 - ✓ No unexplained jargon or technical acronyms
-- ✓ Consistent use of terminology
-- ✓ Benefits outweigh effort (apparent in tone)
+- ✓ Document fits within 4–5 pages
 
 ### Common Errors to Avoid
+- ✗ **Document too long:** Exceeding 5 pages — this is the #1 error to prevent
+- ✗ Verbose out-of-scope items with multi-sentence explanations
+- ✗ Deliverables sub-lists under each in-scope feature
+- ✗ Objectives/Key Activities/Success Criteria sub-sections per sprint
+- ✗ Adding a Conclusion section when not requested
 - ✗ Vague language: "We'll do our best," "hopefully," "we'll try"
 - ✗ Unsubstantiated claims: "This will save 50% time" (without evidence)
 - ✗ Invented details: features not in the hackathon, made-up timeline, fictional metrics
 - ✗ Inconsistent terminology: switching between "user," "operator," "administrator"
-- ✗ Missing prerequisites: assuming client has systems/resources without stating
-- ✗ Scope creep: features that are out-of-scope not explicitly listed as such
-- ✗ Undefined acronyms: using "DAG," "ETL," "RAG" without explaining first use
