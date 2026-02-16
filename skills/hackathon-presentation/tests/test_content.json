@@ -1,0 +1,133 @@
+{
+  "agenda": {
+    "day1": [
+      {"time": "08:00", "activity": "Check-In + Introduction"},
+      {"time": "09:00", "activity": "Process Flow + Framing"},
+      {"time": "10:00", "activity": "Workstream: AI Modelling"},
+      {"time": "10:00", "activity": "Workstream: Application"},
+      {"time": "12:00", "activity": "Lunch Break"},
+      {"time": "13:00", "activity": "Workstream: AI Modelling"},
+      {"time": "13:00", "activity": "Workstream: Application"},
+      {"time": "17:00", "activity": "Check Out"},
+      {"time": "18:00", "activity": "Dinner"},
+      {"time": "19:00", "activity": "Hacking + Beer (optional)"}
+    ],
+    "day2": [
+      {"time": "08:00", "activity": "Check-in + Feedback"},
+      {"time": "09:00", "activity": "Workstream: AI Modelling"},
+      {"time": "09:00", "activity": "Workstream: Application"},
+      {"time": "12:00", "activity": "Working Lunch"},
+      {"time": "13:00", "activity": "Final Prep"},
+      {"time": "14:00", "activity": "Presentations + Debrief"},
+      {"time": "16:00", "activity": "Wrap-up + Next Steps"}
+    ]
+  },
+  "check_in": {
+    "questions": [
+      "Who am I?",
+      "What comes to my mind when I think of {client_name} and AI?",
+      "When is this AI Hackathon a success?"
+    ]
+  },
+  "use_case": {
+    "pain_points": [
+      "~50 quotations per day created manually, tying up sales capacity.",
+      "Enquiries in varied formats (emails, PDFs, portals) requiring manual interpretation.",
+      "Too much time spent on data lookup: SP numbers, measurements, materials, stock…",
+      "Incomplete customer data, especially for new accounts (missing SP numbers).",
+      "High error rate in manual transcription to ERP system."
+    ],
+    "data_sources": [
+      {
+        "icon": "📧",
+        "title": "Inquiry emails and PDFs",
+        "description": "Real customer inquiries in multiple languages with varying formats and attachments."
+      },
+      {
+        "icon": "📋",
+        "title": "Order lifecycle data",
+        "description": "Examples from inquiry through order confirmation for 5 suppliers (FIM INOX, INOX CENTER, KORO, PROFILINOX, SIDERTUBI)."
+      },
+      {
+        "icon": "📊",
+        "title": "Product master data",
+        "description": "Product list with SP numbers, measurements, materials, and the standard order process documentation."
+      }
+    ],
+    "system_landscape": {
+      "erp": "Custom ERP System (order management, quotation storage)",
+      "crm": "Customer Database (order history, contact details)",
+      "cloud_infra": "Cloud-hosted AI models for scalability",
+      "key_apis": [
+        "Inquiry extraction from email and document sources",
+        "Product catalog matching engine (SP numbers)",
+        "Quotation generation and ERP upload",
+        "Customer data validation and enrichment"
+      ],
+      "integrations": "Email inbox integration, PDF parser, product master sync, ERP bidirectional connection",
+      "constraints_or_notes": "Manual data entry currently required; incomplete data for new customers; multilingual inquiry processing needed (DE, IT, EN, FR)"
+    },
+    "approach_steps": [
+      "Inquiry parsing — Extract structured data from emails, PDFs, and web portal submissions",
+      "Product mapping — Match requested products to our catalog using SP numbers and measurements",
+      "Quotation generation — Create standardized quotations with pricing and lead times",
+      "Clarification automation — Request missing information and guide customers through the sales process"
+    ],
+    "approach_question": "Do we need customer data validation? Verify customer information and match with order lifecycle examples.",
+    "challenges": [
+      "Unstructured data formats — Emails, PDFs, and portal submissions vary widely in structure and language.",
+      "Incomplete customer data — Especially for new customers, SP numbers and specifications can be missing or non-standard.",
+      "Product catalog matching accuracy — Mapping customer requirements to the correct standard profile demands high precision.",
+      "Edge cases and exceptions — Not every inquiry fits the standard product pattern; system must detect when human intervention is required.",
+      "User adoption and trust — Sales teams need to trust AI-generated quotation drafts enough to use them in daily operations."
+    ]
+  },
+  "results": {
+    "business_value": [
+      {
+        "number": "01",
+        "title": "Faster Quotation Turnaround",
+        "description": "Reduce average response time from days to hours — winning more deals through faster customer response."
+      },
+      {
+        "number": "02",
+        "title": "Strategic Use of Time",
+        "description": "~1 FTE freed from manual quotation work to focus on complex projects and key accounts — strengthening customer relationships."
+      },
+      {
+        "number": "03",
+        "title": "AI Skill Development",
+        "description": "Enhancing AI competency across Montanstahl — operations and IT teams building foundation for future automation."
+      }
+    ],
+    "key_metrics": {
+      "poc_scope": "Tested with sample inquiries across 5 supplier categories; 94% inquiry parsing accuracy; 92% product catalog matching; avg 1.5 min per quotation",
+      "timeline_to_live": "Phase 1 (Pilot): 4 weeks — Phase 2 (Limited Rollout): 4 weeks — Phase 3 (Full Deployment): ongoing",
+      "estimated_roi": "~8-10 hours saved per day; 80%+ of standard requests automatable; ~1 FTE capacity freed for high-value sales work"
+    },
+    "poc_summary": {
+      "intro": "We have built a proof of concept (PoC) that enables us to:",
+      "features": [
+        "Parse incoming customer inquiries across multiple languages and formats",
+        "Extract product requirements including SP numbers and specifications",
+        "Map requirements to the product catalog with 92% accuracy",
+        "Generate draft quotations with pricing and lead times",
+        "Flag edge cases requiring human review (3.2% false positive rate)",
+        "And more..."
+      ],
+      "demo_description": "Live walkthrough: watch as an incoming customer email (in German) is parsed, products are matched to SP numbers in the catalog, and a formatted quotation draft is generated in under 90 seconds — ready for sales team review and one-click send."
+    },
+    "lessons_learned": [
+      "Language flexibility is critical — customers submit inquiries in German, Italian, English, and French; multilingual AI capability proved essential.",
+      "Product master data quality matters — small inconsistencies in SP numbers significantly impact matching accuracy; data cleansing should precede deployment.",
+      "Sales team buy-in drives success — early engagement with sales managers yielded valuable feedback on the approval workflow and trust requirements.",
+      "Start with 80% automation target — pursuing full automation creates risk of over-engineering; iterative improvement is the right approach."
+    ],
+    "next_steps": [
+      "Publish hackathon debrief document summarizing PoC scope, test results, and refinement roadmap.",
+      "Schedule Phase 1 kickoff meeting with Montanstahl technical team (target: 2 weeks post-hackathon).",
+      "Deploy pilot in controlled environment — internal testing with standard product inquiries (~70% of volume).",
+      "Define governance model — who approves AI-generated quotations? Escalation policy for edge cases?"
+    ]
+  }
+}

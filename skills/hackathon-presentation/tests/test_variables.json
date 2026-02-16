@@ -1,0 +1,26 @@
+{
+  "client_name": "Montanstahl",
+  "industry": "Steel & Special Profiles Manufacturing",
+  "company_size": "Enterprise (~300 employees)",
+  "location": "Stabio, Switzerland",
+  "hackathon_dates": {
+    "day1": "09.02.2025",
+    "day2": "10.02.2025"
+  },
+  "use_case_title": "Quotation creation",
+  "presentation_title": "Strengthening Montanstahl With AI",
+  "language": "en",
+  "team_members": {
+    "ot_team": ["An Nguyen", "Anton Shemyakov", "Ghada Mjanah", "Julius Thommel"],
+    "client_contacts": ["Tim Schleicher"]
+  },
+  "hackathon_goals": [
+    "Prove we can automate 80% of standard quotation requests",
+    "Reduce quotation turnaround from days to hours",
+    "Build a working PoC for inquiry-to-quote automation"
+  ],
+  "branding_notes": {
+    "primary_color": "#18A05A",
+    "logo_style": "Client logo on cover, OT logo on thanks slide"
+  }
+}
