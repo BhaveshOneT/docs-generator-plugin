@@ -9,6 +9,7 @@ Transforms unstructured project input (PDFs, DOCX files, text notes) into client
 - One Thousand branded cover page, headers, and formatting
 - Numbered sections with green Heading1 / dark Heading2 styles
 - Graphviz-rendered architecture diagrams (Pillow fallback if Graphviz unavailable)
+- Editable draw.io (.drawio) architecture diagrams — open in draw.io desktop or web
 - Confidence-scored content with iterative review for weak sections
 - Anti-hallucination verification (never invents metrics, features, or timelines)
 - English and German language support
@@ -42,21 +43,27 @@ docs-generator/
 │   └── plugin.json                      # Plugin manifest (name, version, keywords)
 ├── package.json                         # Node package metadata
 ├── skills/
-│   └── scope-document-generator/
-│       ├── SKILL.md                     # Full skill instructions (start here)
+│   ├── scope-document-generator/
+│   │   ├── SKILL.md                     # Full skill instructions (start here)
+│   │   ├── scripts/
+│   │   │   ├── generate_scope_doc.py    # DOCX assembly from JSON content + template
+│   │   │   ├── generate_architecture_diagram.py  # Graphviz/Pillow diagram renderer
+│   │   │   └── extract_architecture_diagram.py   # Extract diagram from source PDF/DOCX
+│   │   ├── assets/
+│   │   │   ├── templates/scope-template/ # Unpacked DOCX template (OT branding baked in)
+│   │   │   ├── logos/                    # logo-stack-black.png, logo-stack-neural-lime.png
+│   │   │   └── fonts/                    # Akkurat LL Regular/Bold (.otf + .ttf)
+│   │   └── references/
+│   │       ├── anti-hallucination-rules.md   # CRITICAL: read before content generation
+│   │       ├── content-extraction-guide.md   # Patterns for extracting info from source docs
+│   │       ├── section-templates-en.md       # English section writing patterns
+│   │       └── section-templates-de.md       # German section writing patterns
+│   └── architecture-diagram/
+│       ├── SKILL.md                     # Skill instructions for draw.io diagram generation
 │       ├── scripts/
-│       │   ├── generate_scope_doc.py    # DOCX assembly from JSON content + template
-│       │   ├── generate_architecture_diagram.py  # Graphviz/Pillow diagram renderer
-│       │   └── extract_architecture_diagram.py   # Extract diagram from source PDF/DOCX
-│       ├── assets/
-│       │   ├── templates/scope-template/ # Unpacked DOCX template (OT branding baked in)
-│       │   ├── logos/                    # logo-stack-black.png, logo-stack-neural-lime.png
-│       │   └── fonts/                    # Akkurat LL Regular/Bold (.otf + .ttf)
+│       │   └── generate_drawio_diagram.py    # draw.io XML generator (stdlib only)
 │       └── references/
-│           ├── anti-hallucination-rules.md   # CRITICAL: read before content generation
-│           ├── content-extraction-guide.md   # Patterns for extracting info from source docs
-│           ├── section-templates-en.md       # English section writing patterns
-│           └── section-templates-de.md       # German section writing patterns
+│           └── anti-hallucination-rules.md   # Anti-hallucination rules for diagrams
 └── README.md
 ```
 
@@ -82,6 +89,30 @@ python scripts/generate_architecture_diagram.py \
   --output /tmp/arch_diagram.png \
   --style detailed
 ```
+
+### Architecture Diagram Skill (draw.io)
+
+A standalone skill for generating **editable** `.drawio` architecture diagrams. Uses the same JSON input format as the Graphviz renderer, extended with draw.io-specific features.
+
+Trigger phrases: "architecture diagram", "draw.io diagram", "drawio diagram", "create diagram", "generate architecture", "system diagram".
+
+```bash
+python skills/architecture-diagram/scripts/generate_drawio_diagram.py \
+  -d /tmp/arch_desc.json \
+  -o /tmp/arch_diagram.drawio \
+  --layout LR \
+  --edge-routing orthogonal
+```
+
+Features:
+- Zone containers rendered as collapsible swimlanes
+- 9 component types with distinct shapes and colours
+- Configurable layout direction (LR / TB) and edge routing (orthogonal / curved / straight)
+- Multi-page support via `pages[]` array
+- Per-component `style_overrides` for custom colours
+- No external dependencies — uses Python stdlib `xml.etree.ElementTree`
+
+See `skills/architecture-diagram/SKILL.md` for the full JSON schema and usage guide.
 
 ### Phase 5 — Document Assembly
 Assemble the final DOCX from the template, variables, content, and diagram:
