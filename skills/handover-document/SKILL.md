@@ -210,7 +210,7 @@ Generate each section using the prompt templates from the reference files.
 
 After generating each section, self-assess a **confidence score (0-100)** based on five dimensions (each 0-20 points):
 
-1. **Source Grounding (0-20):** Is every claim traceable to the source document?
+1. **Source Grounding (0-20):** Is every claim traceable to the GitHub repo or Confluence source?
 2. **Specificity (0-20):** Are names, tools, versions, URLs specific rather than generic?
 3. **Completeness (0-20):** Does the section cover its full purpose per the template?
 4. **Actionability (0-20):** Can someone act on this content? (deploy, access, troubleshoot)
@@ -234,38 +234,63 @@ After generating each section, self-assess a **confidence score (0-100)** based 
 | Credentials & Access | 90 | Security-critical, must be exact |
 | Recommendations & Next Steps | 70 | Forward-looking, allows synthesis |
 
-#### Iterative Review Loop
+#### Iterative Gap-Filling Loop
 
 After scoring all sections, if ANY section falls below its threshold:
 
-1. **Show the user a summary table:**
+1. **Show the user a summary table** with what was found and what's missing:
    ```
-   Section                        Score   Status
-   ──────────────────────────────────────────────
-    1. Project Overview              85     ✓ Pass
-    2. Project Timeline              72     ✗ Needs input (below 75)
-    3. Features & Workflows          88     ✓ Pass
-    4. Data Sources                  65     ✗ Needs input
-    5. Development History           74     ✓ Pass
-    6. Architecture                  80     ✓ Pass
-    7. Dependencies & Libraries      42     ✗ Needs input
-    8. Deployment Instructions       38     ✗ Needs input
-    9. Known Limitations             70     ✗ Needs input (below 75)
-   10. Code Package                  55     ✗ Needs input
-   11. Credentials & Access          30     ✗ Needs input
-   12. Recommendations               72     ✓ Pass
+   Section                        Score   Status            Sources Found
+   ─────────────────────────────────────────────────────────────────────────
+    1. Project Overview              85     ✓ Pass           CF: scope doc, debrief
+    2. Project Timeline              72     ✗ Below 75       CF: debrief (no sprint design found)
+    3. Features & Workflows          88     ✓ Pass           GH: code + CF: scope doc
+    4. IP & Legal                    40     ✗ Below 85       CF: no IP section found
+    5. Data Sources                  65     ✗ Below 80       CF: debrief (partial)
+    6. Development History           74     ✓ Pass           CF: debrief
+    7. Architecture                  80     ✓ Pass           GH: Dockerfile, Terraform + CF: arch page
+    8. Dependencies & Libraries      95     ✓ Pass           GH: requirements.txt
+    9. Deployment Instructions       85     ✓ Pass           GH: README + Dockerfile + CI/CD
+   10. Known Limitations             70     ✗ Below 75       GH: 3 issues found, no TODOs in code
+   11. Code Package                  90     ✓ Pass           GH: repo structure
+   12. Credentials & Access          30     ✗ Below 90       No source found
+   13. Recommendations               72     ✓ Pass           CF: debrief
    ```
 
-2. **For each failing section, ask the user to upload specific documents or provide text.** Be precise about what's missing:
-   - "Dependencies scored 42/100. I found no requirements.txt, package.json, or dependency list in the uploaded documents. Can you upload or paste the project's dependency file?"
-   - "Deployment Instructions scored 38/100. The source documents don't describe how to deploy the solution. Can you upload a deployment guide, README with deploy steps, or describe the deployment process?"
-   - "Credentials scored 30/100. No credential information was found. Can you provide: (a) 1Password vault links, (b) API key locations, (c) portal URLs with access instructions?"
+2. **For each failing section, explain what was already extracted and what's still missing.** Be specific about the gap and suggest the most practical way to fill it:
 
-3. **When the user provides additional documents or text**, re-extract, re-generate the failing sections, and re-score.
+   **Pattern: State what was checked → what's missing → how to fix it**
 
-4. **Repeat until all sections pass** OR the user explicitly says to proceed anyway ("proceed anyway", "good enough", "skip this").
+   - "**IP & Legal scored 40/85.** I checked the Confluence scope doc and debrief but found no IP ownership or license clauses. Can you: (a) point me to a specific Confluence page with contract/IP info, (b) paste the relevant contract clauses, or (c) tell me the IP ownership status and I'll mark the rest as `[Noch zu bestätigen]`?"
+
+   - "**Credentials & Access scored 30/90.** Neither the GitHub repo (.env.example only has placeholder keys) nor Confluence contained credential/access information. Can you provide: (a) 1Password vault share links per system, (b) portal URLs and who has access, (c) any credential rotation instructions? If some are unknown, I'll use `[Noch zu bestätigen]` markers."
+
+   - "**Project Timeline scored 72/75.** The debrief mentions sprints but without exact calendar week dates. Is there a sprint design plan in Confluence I missed, or can you provide the sprint date ranges?"
+
+   - "**Known Limitations scored 70/75.** I found 3 open GitHub issues but no deferred feature list. Were there features discussed but not built? Any known edge cases?"
+
+3. **Accept any of these input types** to fill gaps:
+   - **Text answers** — the user describes what's missing verbally ("IP is owned by the client, confirmed by email on Oct 15")
+   - **Confluence page pointers** — "check page X in space Y" → fetch and re-extract
+   - **GitHub file pointers** — "look at /docs/deployment.md in the repo" → read and re-extract
+   - **Uploaded files** — the user uploads a PDF, DOCX, or image (architecture diagram, contract excerpt)
+   - **Jira references** — "the open issues are in Jira project XYZ" → search Jira if available
+
+4. **Re-extract, re-generate the failing sections, and re-score** after receiving additional input.
+
+5. **Repeat until all sections pass** OR the user explicitly says to proceed anyway ("proceed anyway", "good enough", "skip this").
 
 **The user can always override** — in which case, proceed with `[To be confirmed]` / `[Noch zu bestätigen]` markers on weak sections.
+
+#### Why This Matters
+
+The GitHub repo + Confluence extraction typically covers 70-80% of the handover content automatically. The gap-filling loop targets the remaining 20-30% — which is usually:
+- **Credentials & Access** — almost never in code or docs (by design)
+- **IP & Legal** — often in contracts, not in project docs
+- **Data Sources** — volume/quality observations are often verbal knowledge
+- **Known Limitations** — edge cases the team knows but didn't document
+
+The confidence scoring ensures nothing is fabricated to fill gaps — it's always better to have a `[Noch zu bestätigen]` marker than invented content in a handover document.
 
 ---
 
