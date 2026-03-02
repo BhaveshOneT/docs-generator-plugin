@@ -48,27 +48,46 @@ The workflow: Collect inputs (user uploads documents) → Extract information wi
 
 ## Inputs
 
-This skill uses an **iterative document collection** approach. The user uploads documents, and the skill extracts what it can, then asks for more if gaps remain.
+The **primary inputs** for a handover document are:
+
+1. **GitHub Repository** — The project's code repository. This is the richest source for: dependencies & libraries (requirements.txt, package.json, Pipfile), deployment instructions (README, Dockerfile, Terraform, CI/CD configs), architecture (code structure, service definitions, API routes), code package details, and known limitations (TODOs, open issues).
+
+2. **Confluence Documentation** — The project's Confluence space containing: scope documents, debrief documents, sprint design plans, architecture diagrams, meeting notes, and any other project documentation pages.
 
 ### How Input Collection Works
 
-1. **Ask the user to upload their project documents** — any combination of:
-   - Scope documents (PDF, DOCX)
-   - Hackathon debrief documents (PDF, DOCX)
-   - Architecture diagrams (PNG, PDF)
-   - README files (MD, TXT)
-   - Sprint notes or project design plans (PDF, DOCX, text)
-   - Deployment guides or runbooks (MD, TXT, PDF)
-   - Confluence page exports
-   - Any other project documentation
+1. **Ask the user for the GitHub repo URL and Confluence space** (see Phase 1).
 
-2. **Extract all available information** from the uploaded documents.
+2. **Clone the GitHub repo** and extract technical information:
+   - README.md / README files → project overview, setup instructions, deployment steps
+   - requirements.txt / package.json / Pipfile → dependencies & libraries
+   - Dockerfile / docker-compose.yml → deployment & infrastructure
+   - Terraform / IaC files → cloud infrastructure setup
+   - .env.example / config files → environment configuration, credentials structure
+   - CI/CD configs (.github/workflows, Jenkinsfile) → deployment pipeline
+   - Source code structure → architecture, features, API endpoints
+   - CHANGELOG / git history → development history
+   - Open issues / TODOs in code → known limitations
 
-3. **Score each section's confidence** based on what was extracted.
+3. **Fetch Confluence pages** from the project space:
+   - Use `searchConfluenceUsingCql` or `getPagesInConfluenceSpace` to find all relevant pages
+   - Read key pages: scope document, debrief document, sprint design plan, architecture pages
+   - Extract: project overview, timeline, features, IP/legal, data sources, development history, recommendations
 
-4. **For sections below threshold**, ask the user to upload additional documents or provide text input for the specific missing information.
+4. **Merge and cross-reference** information from both sources. GitHub is authoritative for technical details (dependencies, deployment, code). Confluence is authoritative for project context (timeline, decisions, client info, IP/legal).
 
-5. **Repeat until all sections pass** or the user says to proceed anyway.
+5. **Score each section's confidence** based on what was extracted.
+
+6. **For sections below threshold**, ask the user to provide additional information or upload supplementary documents.
+
+7. **Repeat until all sections pass** or the user says to proceed anyway.
+
+### Supplementary Inputs (Optional)
+
+If the GitHub repo + Confluence don't cover everything, the user can also provide:
+- Architecture diagrams (PNG, PDF) — uploaded directly
+- Credential/access documents — text input (never stored in files)
+- Additional context — verbal answers to gap-filling questions
 
 ### Language Selection
 
@@ -84,11 +103,36 @@ This determines section titles, content language, and placeholder markers.
 
 Ask the user using AskUserQuestion:
 
-1. **Language:** English or German?
-2. **Source Documents:** Upload all available project documents (scope doc, debrief, architecture diagrams, READMEs, sprint notes, deployment guides, etc.)
-3. **Client Name:** Who is the handover for? (if not extractable from docs)
-4. **Confluence Space:** Which Confluence space should the handover page be created in? (If unknown, the skill will search for the project space — see Phase 5.)
+1. **GitHub Repository URL:** The project's GitHub repo (e.g., `https://github.com/org/project-name`). This is the primary technical source.
+2. **Confluence Space:** Which Confluence space contains the project documentation? (Space key or name. If unknown, the skill will search by project/client name.)
+3. **Language:** English or German?
+4. **Client Name:** Who is the handover for? (if not extractable from repo/Confluence)
 5. **Also generate DOCX?** Does the user want a branded DOCX file in addition to the Confluence page? (Default: No, Confluence only)
+
+**After collecting inputs:**
+
+1. **Clone the GitHub repo** to a temporary directory:
+   ```bash
+   git clone <repo_url> /tmp/handover_repo
+   ```
+   If the repo requires authentication, ask the user for a PAT or use an existing GitHub CLI session.
+
+2. **Scan the repo** for key files:
+   ```bash
+   # Find documentation and config files
+   find /tmp/handover_repo -maxdepth 3 \( \
+     -name "README*" -o -name "requirements*.txt" -o -name "package.json" -o \
+     -name "Pipfile" -o -name "Dockerfile" -o -name "docker-compose*" -o \
+     -name "*.tf" -o -name ".env.example" -o -name "CHANGELOG*" -o \
+     -name "Makefile" -o -name "*.yml" -o -name "*.yaml" \
+   \) -type f
+   ```
+   Read each discovered file to extract relevant information.
+
+3. **Fetch Confluence pages** from the project space:
+   - Use `getPagesInConfluenceSpace` to list all pages
+   - Read the key pages (scope doc, debrief, sprint design, architecture) using `getConfluencePage` with `contentFormat: "markdown"`
+   - Extract project context, timeline, decisions, client info
 
 **Note:** If the user also wants a DOCX, Python dependencies (`python-docx`, `Pillow`) are installed automatically by the plugin's SessionStart hook. No manual `pip install` is needed.
 
@@ -108,35 +152,53 @@ Before generating, Claude **MUST** read these reference files. **Read ALL THREE 
 
 #### Extract from Source Material
 
-From the provided documents, extract information for each of the 12 sections below. Build a structured data object mapping each section to its extracted content.
+From the **GitHub repo** and **Confluence pages**, extract information for each of the 13 sections below. Build a structured data object mapping each section to its extracted content.
+
+**Source priority per section** (GitHub = GH, Confluence = CF):
+
+| Section | Primary Source | What to Extract From |
+|---------|---------------|---------------------|
+| Project Overview | CF (scope doc, debrief) | Project purpose, client, scope, team contacts |
+| Project Timeline | CF (sprint design, debrief) | Sprint breakdown, dates, deliverables |
+| Features & Workflows | GH (code, README) + CF | API routes, services, features from code + docs |
+| IP & Legal | CF (scope doc) | IP clauses, license info, GDPR |
+| Data Sources | CF (debrief, scope) + GH | Data descriptions from docs + data configs in code |
+| Development History | CF (debrief, sprint notes) | Per-sprint narrative, decisions, metrics |
+| Architecture | GH (code structure, configs) + CF | Service layout, infra configs, architecture docs |
+| Dependencies & Libraries | GH (requirements.txt, package.json, Dockerfile) | **Exact versions from repo — authoritative** |
+| Deployment Instructions | GH (README, Dockerfile, Terraform, CI/CD) | **Exact commands from repo — authoritative** |
+| Known Limitations | GH (issues, TODOs) + CF | Open issues, TODOs in code, deferred items in docs |
+| Code Package | GH (repo structure) | Repo URL, contents, .env handling, test status |
+| Credentials & Access | CF + user input | 1Password links, portal URLs, access grants |
+| Recommendations | CF (debrief, scope) | Next steps, improvement suggestions |
 
 **Extraction targets per section:**
 
-1. **Project Overview:** Project name, client name, project purpose, scope delivered, target users, key features, quality systems (if any), team contacts (OT side + client side)
+1. **Project Overview:** Project name, client name, project purpose, scope delivered, target users, key features, quality systems (if any), team contacts (OT side + client side). *Source: Confluence scope doc + debrief.*
 
-2. **Project Timeline:** Sprint breakdown with dates (calendar week notation preferred), high-level deliverables per sprint, overall project duration
+2. **Project Timeline:** Sprint breakdown with dates (calendar week notation preferred), high-level deliverables per sprint, overall project duration. *Source: Confluence sprint design plan + debrief.*
 
-3. **Features & Workflows:** All major functionalities, critical end-to-end workflows, user-facing capabilities, API endpoints (if applicable)
+3. **Features & Workflows:** All major functionalities, critical end-to-end workflows, user-facing capabilities, API endpoints (if applicable). *Source: GitHub code (API routes, service files) + Confluence feature descriptions.*
 
-4. **IP & Legal Considerations:** IP ownership status (who owns the code, data, model outputs), license compliance (open-source licenses used, any restrictions), non-compete / preferred partner clauses, data protection compliance (GDPR, anonymization), client sign-off status
+4. **IP & Legal Considerations:** IP ownership status (who owns the code, data, model outputs), license compliance (open-source licenses used, any restrictions), non-compete / preferred partner clauses, data protection compliance (GDPR, anonymization), client sign-off status. *Source: Confluence scope doc + contracts.*
 
-5. **Data Sources:** All data sources used (name, type, format, volume, quality observations), data access methods, storage locations
+5. **Data Sources:** All data sources used (name, type, format, volume, quality observations), data access methods, storage locations. *Source: Confluence debrief + GitHub data configs.*
 
-6. **Development History:** Per-sprint narrative — what was built, key decisions made (with rationale), technical challenges encountered, metrics improvements (before/after per sprint), deferred items and why
+6. **Development History:** Per-sprint narrative — what was built, key decisions made (with rationale), technical challenges encountered, metrics improvements (before/after per sprint), deferred items and why. *Source: Confluence debrief + sprint notes.*
 
-7. **Architecture:** Architecture diagram (extract or generate), numbered workflow description (step-by-step data/request flow), component table (Name | Type | Description), connection table (Source | Target | Method | Auth | Protocol) if available
+7. **Architecture:** Architecture diagram (extract or generate), numbered workflow description (step-by-step data/request flow), component table (Name | Type | Description), connection table (Source | Target | Method | Auth | Protocol) if available. *Source: GitHub code structure + Terraform/Docker configs + Confluence architecture pages.*
 
-8. **Dependencies & Libraries:** Main dependencies (OS, language, runtime versions), OS-level packages, language-specific packages with version pinning, third-party APIs
+8. **Dependencies & Libraries:** Main dependencies (OS, language, runtime versions), OS-level packages, language-specific packages with version pinning, third-party APIs. *Source: GitHub — requirements.txt, package.json, Pipfile, Dockerfile. This section must be extracted directly from the repo, not synthesized.*
 
-9. **Deployment Instructions:** Cloud infrastructure setup (Terraform/IaC if applicable), code deployment method (step-by-step with commands), environment configuration, monitoring setup
+9. **Deployment Instructions:** Cloud infrastructure setup (Terraform/IaC if applicable), code deployment method (step-by-step with commands), environment configuration, monitoring setup. *Source: GitHub — README deploy section, Dockerfile, Terraform files, CI/CD configs, Makefile.*
 
-10. **Known Limitations & Open Issues:** Current limitations of the solution, known bugs or edge cases, features discussed but not implemented, technical debt
+10. **Known Limitations & Open Issues:** Current limitations of the solution, known bugs or edge cases, features discussed but not implemented, technical debt. *Source: GitHub issues + TODO comments in code + Confluence debrief deferred items.*
 
-11. **Code Package:** Repository URL or zip file delivery method, what's included vs excluded, env file handling, code quality status (linting, tests)
+11. **Code Package:** Repository URL or zip file delivery method, what's included vs excluded, env file handling, code quality status (linting, tests). *Source: GitHub — repo URL, directory structure, .env.example, test configs.*
 
-12. **Credentials & Access:** All access credentials organized by system (1Password links preferred), portal URLs, who has access, expiry dates, how to rotate/renew
+12. **Credentials & Access:** All access credentials organized by system (1Password links preferred), portal URLs, who has access, expiry dates, how to rotate/renew. *Source: Confluence + user input. Never extract actual secrets from code.*
 
-13. **Recommendations & Next Steps:** Short-term improvements, medium-term extensions, long-term vision, maintenance plan, support arrangement
+13. **Recommendations & Next Steps:** Short-term improvements, medium-term extensions, long-term vision, maintenance plan, support arrangement. *Source: Confluence debrief + scope doc recommendations.*
 
 ---
 
